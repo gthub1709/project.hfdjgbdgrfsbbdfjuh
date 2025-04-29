@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Природный чат-бот</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+      background-size: cover;
+      background-position: center;
+      transition: background-image 1s ease-in-out;
+    }
+
+    .chat-container {
+      width: 350px;
+      padding: 20px;
+      background-color: rgba(0, 0, 0, 0.5);
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .chat-box {
+      max-height: 300px;
+      overflow-y: auto;
+      background-color: rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      padding: 10px;
+      color: black;
+      font-size: 14px;
+    }
+
+    .input-container {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    input[type="text"] {
+      width: 80%;
+      padding: 10px;
+      border: 2px solid #fff;
+      border-radius: 5px;
+      background-color: transparent;
+      color: white;
+      font-size: 14px;
+    }
+
+    button {
+      padding: 10px;
+      border: 2px solid #fff;
+      border-radius: 5px;
+      background-color: transparent;
+      color: white;
+      cursor: pointer;
+      font-size: 14px;
+      transition: transform 0.2s;
+    }
+
+    button:hover {
+      transform: scale(1.1);
+    }
+
+    .chat-message {
+      opacity: 0;
+      animation: fadeIn 1s forwards;
+    }
+
+    @keyframes fadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    .user-message {
+      background-color: #4caf50;
+      padding: 8px 12px;
+      border-radius: 20px;
+      align-self: flex-end;
+    }
+
+    .bot-message {
+      background-color: #2196f3;
+      padding: 8px 12px;
+      border-radius: 20px;
+      align-self: flex-start;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Музыка -->
+<audio autoplay loop>
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+  Ваш браузер не поддерживает аудио.
+</audio>
+
+<div class="chat-container">
+  <div class="chat-box" id="chat-box"></div>
+  <div class="input-container">
+    <input type="text" id="user-input" placeholder="Задайте вопрос..." />
+    <button onclick="sendMessage()">Отправить</button>
+  </div>
+</div>
+
+<script>
+  const responses = [
+    "Сложно сказать, но это было весело!",
+    "Хмм... интересно, но я бы сказал, что ты прав!",
+    "Ого! Никогда не думал, что это скажу, но ты победил!",
+    "Вот это да! Ты прям как разгадываешь мои тайны!",
+    "Смело, правда? Но мне нравится твоя уверенность!",
+    "Ух ты! Ты меня удивил. Я даже не знал, что так можно!"
+  ];
+
+  function getRandomResponse() {
+    return responses[Math.floor(Math.random() * responses.length)];
+  }
+
+  function sendMessage() {
+    const userInput = document.getElementById("user-input").value;
+    if (userInput.trim() === "") return;
+
+    const chatBox = document.getElementById("chat-box");
+    const userMessage = document.createElement("div");
+    userMessage.classList.add("chat-message", "user-message");
+    userMessage.textContent = userInput;
+
+    const botMessage = document.createElement("div");
+    botMessage.classList.add("chat-message", "bot-message");
+    botMessage.textContent = getRandomResponse();
+
+    chatBox.appendChild(userMessage);
+    chatBox.appendChild(botMessage);
+
+    chatBox.scrollTop = chatBox.scrollHeight;
+    document.getElementById("user-input").value = "";
+  }
+
+  // Только 3 надёжных лёгких фоновых изображения природы
+  const natureImages = [
+    "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1600&q=80", // лес
+    "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1600&q=80", // утренний лес
+    "https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?auto=format&fit=crop&w=1600&q=80"  // поле и небо
+  ];
+
+  let currentImage = 0;
+
+  function changeBackground() {
+    document.body.style.backgroundImage = `url('${natureImages[currentImage]}')`;
+    currentImage = (currentImage + 1) % natureImages.length;
+  }
+
+  changeBackground(); // стартовый фон
+  setInterval(changeBackground, 5000); // каждые 5 секунд
+</script>
+
+</body>
+</html>
+
+
+
+
